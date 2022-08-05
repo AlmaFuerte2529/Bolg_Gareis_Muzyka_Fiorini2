@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argentinos en el mundo</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css' %}">
+</head>
+        
+        <a class="btn btn-primary" style="margin-left:auto; margin-right: auto;"  href="{% url 'registrate' %}">Registrate</a>
+        
+        {% if not request.user.is_authenticated %}
+        <a class="btn btn-primary" style="margin-left:auto; margin-right: auto;"  href="{% url 'login' %}">Ingresa</a>
+        {% else %}
+        <a class="btn btn-primary" style="margin-left:auto; margin-right: auto;"  href="{% url 'logout' %}">Salir</a>
+        {% endif %}
+        
+<body>
+    <h1>Blog de Argentinos en el mundo</h1>
+    {% block titulo %}
+
+    {% endblock %}
+    {{ mensaje }}
+    {% if request.user.is_authenticated %}
+    <div class="user">
+        <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ request.user.avatar_set.first.imagen.url }}" alt="imagen de perfil"/>
+        <div id="hormenu">
+            <ul>
+                <li>
+                    <p class="user">{{ request.user.username|title }}</p>
+                    <ul>
+                        <li><a href="{% url 'editarPerfil' %}">Editar Perfil</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    <section>
+        {% for elemento in articulos %}
+            <article>
+                <h3>{{ elemento.nombre }}</h3>
+                <p>
+                    {{ elemento.contenido }}
+                </p>
+                <img src="{{ elemento.imagen.url }}">
+                <footer>
+                    autor: {{ elemento.autor }}
+                </footer>
+            </article>
+        {% endfor %}
+    </section>
+    {% block contenido %}
+
+    {% endblock %}
+        
+</body>
+</html>
