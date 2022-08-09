@@ -1,0 +1,61 @@
+{% extends "padre.html" %}
+{% load static %} 
+
+{% block Articulo %}
+<section class="grid-container blogpost-img-container">
+  <img src="{% static '\imagenes\aaa.jpg' %}" alt="" />
+</section>
+<section class="blogpost-main-container">
+  <div class="grid-container-blog">
+    <h3 style="color:blue;font-size: 30px;">Noticias</h3>
+    <article>
+      <h1>"Relato de un Argentino"</h1>
+      <p>
+        Emigrar y poder vivir en Estados Unidos es el sueño de una gran cantidad de personas y una clara prueba de ello es que se trata del país con mayor número de inmigrantes en todo el mundo.            </p>
+      <p>
+        La mayoría va en busca de una mejor calidad de vida que permite la estabilidad de su economía que además genera condiciones interesantes y atractivas para algunos negocios. En este sentido, Miami suele ser una de los destinos más elegidos por los argentinos, principalmente por ser el español uno de los idiomas predominantes.
+      </p>
+      <p>
+        Durante casi todo el 2020, Estados Unidos cerró sus fronteras a una buena parte del mundo, pero de a poco con el avance de la vacunación contra el coronavirus la situación y el permiso para ingresar al país se fue flexibilizando, aunque todavía con algunas restricciones.
+      </p>
+      <p>
+        Brian Zirulnikoff es director de Dynaxe Capital para América Latina, una consultora financiera en Estados Unidos con foco en el asesoramiento y mitigación de riesgos, actualmente asesora a muchas familias que quieren instalarse en Miami. "Lo recomendable es siempre ver las prioridades inmigratorias del individuo o familia", explica a Clarín.
+      </p>
+      <p>
+        "Mucha gente tiene la idea de emigrar cuanto antes una vez que toma la decisión, pero es recomendable planear a mediano-largo plazo y elegir una estrategia de inmigración personalizada", sugiere Zirulnikoff.
+      </p>
+    </article>
+  </div>
+</section>
+
+<section style="border-radius: 5px;color:blue;border: 0.1px solid #1E679A;">
+  <form action="" method="post" style="margin: auto; width: 320px;color: blue;">
+    <H2>Sector de Comentarios</H2>
+  </form>
+  {% for comentars in comentar %}
+  <div style="margin: auto; width: 720px;">
+    <li>Usuario: Anónimo</li>
+    <ul>Comentario: {{ comentars }}</ul>
+  </div>
+{% endfor %}
+
+</section>
+
+<!--
+{% block contenido %} 
+<section>
+    <form action="" method="post" style="margin: auto; width: 560px;">
+        {% csrf_token %}
+        <h2>Comunicate con nosotros</h2>
+        {{ form.as_p }}
+        <a href=""  type="submit" class="blogs-button" style="width: 50vw; margin-left : 10vw;">Enviar Comentario</a>
+        <input type="submit" name="enviar" value="Enviar Comentario" >
+        {% if mensaje %}
+        <h2>{{ mensaje }}</h2>
+        {% endif %}
+    </form> 
+</section>
+{% endblock %} 
+-->
+
+{% endblock %}
