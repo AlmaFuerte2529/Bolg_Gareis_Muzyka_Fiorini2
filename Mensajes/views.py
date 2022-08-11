@@ -9,38 +9,39 @@ from Mensajes.forms import FormMensajes
 nombre_temp =""
 
 def mensajes(request):
-    mensajes = Mensajes.objects.filter(user=request.user)
-    return render(request, "mensajes.html", {'mensajes':mensajes})
+    mensajes = Mensajes.objects.filter(nombre=request.user).order_by('-creado')
+    return render(request, "Mensajes/mensajes.html", {'mensajes':mensajes})
 
 def mensaje(request, msg_id):
     mensaje = Mensajes.objects.get(id=msg_id)
-    return render(request, "mensaje.html", {'mensaje':mensaje})
+    mensaje.leido = True
+    mensaje.save()
+    return render(request, "Mensajes/mensaje.html", {'mensaje':mensaje})
 
-def enviar(request, nombre):
-    global nombre_temp
-    nombre_temp = nombre
-    form= FormMensajes(initial={"user":nombre, "autor":request.user})
-    return render(request, "formMensaje.html", {"formulario":form})
+# def enviar(request, nombre):
+#     global nombre_temp
+#     nombre_temp = nombre
+#     form= FormMensajes(initial={"user":nombre, "autor":request.user})
+#     return render(request, "Mensajes/formMensaje.html", {"formulario":form})
 
-def formMensajes(request):
+def formMensajes(request, nombre):
     if (request.method=="POST"):
         form= FormMensajes(request.POST)
         if form.is_valid():
             info= form.cleaned_data
             autor = request.user
-            nombre = nombre_temp
             msj= info["mensaje"]
-            mensaje = Mensajes(user=nombre, autor=autor, mensaje=msj)
+            mensaje = Mensajes(user=request.user, nombre=nombre, autor=autor, mensaje=msj)
             mensaje.save()
             return redirect('mensajes')
     else:
-        form= FormMensajes(initial={"user":nombre, "autor":request.user})
+        form= FormMensajes(initial={"nombre":nombre, "autor":request.user})
     
-    return render(request, "formMensaje.html", {"formulario":form})
+    return render(request, "Mensajes/formMensaje.html", {"formulario":form, 'nombre':nombre})
 
 def listaUsuarios(request):
-    usuarios = User.objects.all()
-    return render(request, "usuarios.html", {"usuarios":usuarios})
+    usuarios = User.objects.all().exclude(username=request.user)
+    return render(request, "Mensajes/usuarios.html", {"usuarios":usuarios})
 
 
 def borrar(request, msg_id):

@@ -1,14 +1,17 @@
-from django.shortcuts import render
-from .forms import *
-from .models import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .forms import *
+from .models import *
+from Mensajes.models import Mensajes
+
 
 
 
 def home(request):  #comentariosForms
-    articulos = Entrada.objects.all()
+    articulos = Entrada.objects.all().order_by('-id')[:3]
+    nuevos = Mensajes.objects.filter(leido=False, nombre=request.user).count()
     if request.method == "POST":
         form = ComentarioForm(request.POST)
         if form.is_valid():
@@ -26,9 +29,9 @@ def home(request):  #comentariosForms
 
             form = ComentarioForm()
             mensaje = "Gracias por tu comentario"
-            return render(request,"bienvenida.html", {"articulos":articulos, "mensaje":mensaje,"form":form})
+            return render(request,"bienvenida.html", {"articulos":articulos, "nuevos": nuevos, "mensaje":mensaje,"form":form})
     form = ComentarioForm()
-    return render(request, "bienvenida.html", {"articulos":articulos, "form":form})
+    return render(request, "bienvenida.html", {"articulos":articulos, "nuevos":nuevos, "form":form})
 
 @login_required
 def entrada(request):
@@ -37,11 +40,18 @@ def entrada(request):
         form = EntradaForm(request.POST, request.FILES)
         if form.is_valid():
             
-            form.save()
-            articulos = Entrada.objects.all()
+            info= form.cleaned_data
+            titulo = info["titulo"]
+            subtitulo = info["subtitulo"]
+            contenido = info["contenido"]
+            imagen= info["imagen"]
+            entrada = Entrada(titulo=titulo, subtitulo=subtitulo, contenido=contenido, autor=request.user, imagen=imagen)
+            entrada.save()
+            articulos = Entrada.objects.all().order_by('-id')[:3]
+            #last_ten_in_ascending_order = reversed(last_ten)()
             return render(request, "bienvenida.html", {"articulos": articulos})
     else:
-        form = EntradaForm(initial={"autor":request.user})
+        form = EntradaForm()
 
     return render(request, "entradaForm.html", {"form":form})
 
@@ -56,7 +66,9 @@ def login_request(request):
             usuario = authenticate(username = usu, password = clave)
             if usuario is not None:
                 login(request, usuario)
-                return render(request, 'bienvenida.html', {'mensaje':f"Bienvenido {usuario}"})
+                articulos = Entrada.objects.all().order_by('-id')[:3]
+                nuevos = Mensajes.objects.filter(leido=False, nombre=request.user).count()
+                return render(request, 'bienvenida.html', {'articulos':articulos, 'nuevos': nuevos, 'mensaje':f"Bienvenido {usuario}"})
             else:
                 return render(request, 'loginForm.html', {'form':form, 'mensaje': 'Usuario o clave incorrecta'})
         else:
@@ -95,7 +107,7 @@ def agregarAvatar(request):
                 pass
             avatar=Avatar(user=request.user, imagen=formulario.cleaned_data['imagen'])
             avatar.save()
-            return render(request, 'inicio.html', {'usuario':request.user, 'mensaje':'AVATAR AGREGADO EXITOSAMENTE'})
+            return render(request, 'bienvenida.html', {'usuario':request.user, 'mensaje':'AVATAR AGREGADO EXITOSAMENTE'})
     else:
         formulario=AvatarForm()
     return render(request, 'agregarAvatar.html', {'formulario':formulario, 'usuario':request.user})
@@ -114,19 +126,57 @@ def editarPerfil(request):
             usuario.password2=informacion['password2']
             usuario.save()
 
-            return render(request, 'bienvenida', {'usuario':usuario, 'mensaje':'PERFIL EDITADO EXITOSAMENTE'})
+            return render(request, "bienvenida.html", {'usuario':usuario, 'mensaje':'PERFIL EDITADO EXITOSAMENTE'})
     else:
         formulario=UserEditForm(instance=usuario)
     return render(request, 'editarPerfil.html', {'formulario':formulario, 'usuario':usuario.username})
 
 
-
-
 def Articulos(request):
-    comentar=Comentario.objects.all()
-    nombre=Comentario.nombre
-    return render(request,"articulos.html",{"comentar":comentar})
+    comentar=Comentarios.objects.all()
+    return render(request,"entradas.html",{"comentar":comentar})
+
     
 def inicio(request):
     return render(request,"bienvenida.html")
 
+
+def detalleEntrada(request, id_entrada):
+    try:
+        entrada = Entrada.objects.get(id=id_entrada)
+    except:
+        return render(request,"detalleEntrada.html",{"mensaje":'La entrada no existe'})
+    return render(request,"detalleEntrada.html",{"entrada":entrada})
+
+def entradas(request):
+    articulos = Entrada.objects.all().order_by('-fecha_ingreso')
+    return render(request, "entradas.html", {"entradas":articulos})
+
+@login_required
+def editarEntrada(request, id_entrada):
+
+    entrada = Entrada.objects.get(id=id_entrada)
+    
+    if entrada.autor != request.user:
+        return render(request, "bienvenida.html", {'mensaje':'Uds no es el autor delentrada'})
+
+    if request.method == "POST":
+        form = EntradaForm(request.POST, request.FILES)
+        if form.is_valid():
+            info = form.cleaned_data
+            entrada.titulo = info["titulo"]
+            entrada.subtitulo = info["subtitulo"]
+            entrada.contenido = info["contenido"]
+            entrada.autor=request.user
+            if info["imagen"] != None:
+                entrada.imagen = info["imagen"]
+            entrada.save()
+            return redirect('inicio')
+    else:
+        form = EntradaForm(initial={"titulo":entrada.titulo, "subtitulo":entrada.subtitulo,
+                                    "contenido":entrada.contenido, "autor":request.user, "imagen":entrada.imagen})
+
+    return render(request, "editarEntrada.html", {"form":form, "id_entrada":entrada.id})
+
+def Nosotros(request):
+    return render(request,"nosotros.html")

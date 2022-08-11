@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Usuarios</title>
-</head>
-<body>
-    <h3>Lista usuarios:</h3>
-    {% if usuarios %}
-    {% for usuario in usuarios %}
-        <a href="{% url 'enviar' usuario.username %}"><p>{{ usuario.username }}</p></a>
-    {% endfor %}
-    {% endif %}
-    
-</body>
-</html>
+{% extends "padre.html" %}
+{% load static %}
+
+{% block Articulo %} 
+    <div>
+        <h3>Lista usuarios:</h3>
+        {% if usuarios %}
+        {% for usuario in usuarios %}
+            <a href="{% url 'formMensajes' usuario.username %}"><p>{{ usuario.username }}</p></a>
+        {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

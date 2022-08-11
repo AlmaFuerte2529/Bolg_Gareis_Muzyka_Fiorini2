@@ -2,21 +2,19 @@ from django import forms
 from .models import Entrada
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from ckeditor.widgets import CKEditorWidget
 
 
 
 
-class EntradaForm(forms.ModelForm):
+class EntradaForm(forms.Form):
     titulo = forms.CharField(max_length=80, widget=forms.TextInput)
-    contenido = forms.CharField(widget=forms.Textarea)
-    imagen = forms.ImageField()
-    autor = forms.CharField(max_length=50, disabled = True, widget=forms.TextInput)
-
-
-    class Meta:
-        model= Entrada
-        fields= ["titulo", "contenido", "imagen", "autor"]
+    subtitulo = forms.CharField(max_length=80, required=False)
+    contenido = forms.CharField(widget=CKEditorWidget())
+    imagen = forms.ImageField(required=False)
     
+
+        
 
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(label="Usuario")
