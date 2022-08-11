@@ -7,7 +7,7 @@
         <link href="{% static '\media-queries.css' %}" rel="stylesheet"  />
         <link href="{% static '\font\flaticon.css' %}" rel="stylesheet" />
     </head>
-    <body>
+    <body style="background-color:white">
         <header>
     
             <section class="header-icons-container">
@@ -21,15 +21,16 @@
         {% block Articulo %} 
         <div class="main-boxs">
             <img src="{% static '\imagenes\user.png' %}" class="avatar" alt="avatar">
-            <h1>Modificar Datos</h1>
+            <h1 style="color: #2c3e50;">Modificar Datos</h1>
             <form">
             <form class="form-table" action="{% url 'editarPerfil' %}" method="POST">
                 {% csrf_token %}          
-                <table>
+                <table style="color: #2c3e50;margin-top: -35px;">
                 {{ formulario.as_table }}
                 </table>       
-                <input type="submit" class="btn btn-sm btn-primary" value="Confirmar"> 
-                <a href="{% url 'inicio' %}"><input type="button" class="btn btn-sm btn-primary"  value="Salir"></a> 
+                <input type="submit" class="btn btn-sm btn-primary" value="Confirmar" style="margin-top: -8px;"> 
+                <a href="{% url 'agregarAvatar' %}"><input type="button" class="btn btn-sm btn-primary"  value="Agregar Avatar" style="margin-top: -8px;"></a> 
+                <a href="{% url 'inicio' %}"><input type="button" class="btn btn-sm btn-primary"  value="Salir" style="margin-top: -8px;"></a> 
        
             </form>
         </div>

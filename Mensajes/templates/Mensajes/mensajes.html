@@ -1,27 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mensajes</title>
-</head>
-<body>
+{% extends "padre.html" %}
+{% load static %}
 
-    <h1>Mensajes</h1>
-    {% if mensajes %}
-    {% for mensaje in mensajes %}
+{% block Articulo %} 
+    <div>
+         <a href="{% url 'listaUsuarios' %}">ENVIAR MENSAJE</a>       
+        <h1>Mensajes</h1>
+        {% if mensajes %}
+        {% for mensaje in mensajes %}
 
         <p>De: <a href="{% url 'mensaje' mensaje.id %}">{{ mensaje.autor }}</a></p>
         <p>{{ mensaje.creado }}</p>
+        {% if mensaje.leido %}
+            <p>Leido</p>
+        {% else %}
+            <p><b> No leido </b></p>
+        {% endif %}
         <a href="{% url 'borrar' mensaje.id %}">Borrar</a>
         <hr>
 
-    {% endfor %}
+        {% endfor %}
 
-    {% else %}
+        {% else %}
         <h4>No hay mensajes</h4>
-    {% endif %}
-    
-</body>
-</html>
+        {% endif %}
+    </div>
+{% endblock %}

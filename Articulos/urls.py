@@ -12,4 +12,10 @@ urlpatterns = [
    path('editarPerfil/', editarPerfil, name= 'editarPerfil'),
    path('articulo/', Articulos, name= 'articulo'),  
    path('inicio/', home ,name='inicio'),
+   path('detalle/<id_entrada>', detalleEntrada, name='detalle'),
+   path('editar/<id_entrada>', editarEntrada, name='editarEntrada'),
+   path('entradas/', entradas, name='entradas'),
+   path('nosotros/', Nosotros ,name='nosotros'),
+
+
 ]

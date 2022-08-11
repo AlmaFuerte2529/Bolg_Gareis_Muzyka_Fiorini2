@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mensajes</title>
-</head>
-<body>
+{% extends "padre.html" %}
+{% load static %}
 
-    {% if formulario.error %}
-    <p style= "color:red">ERROR EN EL FORMULARIO</p>
-    {% endif %}
+{% block Articulo %} 
+    <div>
+                
+        {% if formulario.error %}
+        <p style= "color:red">ERROR EN EL FORMULARIO</p>
+        {% endif %}
+    
+        <form class="form-table" action="{% url 'formMensajes' nombre %}" method="POST"> {% csrf_token %}
+            
+            <table>
+                {{ formulario.as_table }}
+            </table>
+    
+    
+            <input type="submit" class ="btn btn-primary" value="Enviar">
+        </form>
 
-    <form class="form-table" action="{% url 'formMensajes' %}" method="POST"> {% csrf_token %}
-        
-        <table>
-            {{ formulario.as_table }}
-        </table>
-
-
-        <input type="submit" class ="btn btn-primary" value="Enviar">
-    </form>
-
-</body>
-</html>
+    </div>
+{% endblock %}

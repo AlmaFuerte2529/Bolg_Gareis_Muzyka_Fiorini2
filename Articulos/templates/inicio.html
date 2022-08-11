@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
+{% block contenido %} 
+<section>
     {% if usuario.is_authenticated %}
     <div class="user">
         <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ usuario.avatar_set.first.imagen.url }}" alt="imagen de perfil"/>
@@ -25,20 +17,5 @@
     {% endif %}
     
     {{ mensaje }}
-
-    {% for elemento in articulos %}
-    <article>
-        <h3>{{ elemento.titulo }}</h3>
-        <p>
-            {{ elemento.contenido }}
-        </p>
-        <img src="{{ elemento.imagen.url }}" width="400" height="400">
-        <p>
-            autor: {{ elemento.autor }}
-        </p>
-    </article>
-{% endfor %}
-
-
-</body>
-</html>
+</section>
+{% endblock %} 

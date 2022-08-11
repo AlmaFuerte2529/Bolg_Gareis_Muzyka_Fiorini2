@@ -1,0 +1,33 @@
+{% extends "padre.html" %}
+{% load static %} 
+
+{% block Articulo %}
+  <section class="grid-container blogpost-img-container">
+    <img src="{% static '\imagenes\aaa.jpg' %}" alt="" />
+  </section>
+  <section class="blogpost-main-container">
+    <div class="grid-container-blog">
+       <h3 style="color:blue;font-size: 30px;">Noticias</h3>
+    </div>
+  </section>
+  <section style="text-align: center;">
+    {% if entrada %}
+      <h3 style="color:blue;font-size:30px;"> Titulo:" {{ entrada.titulo }} "</h3>
+      <p style="text-decoration: underline;font-size:20px;">Articulo:</p> 
+      <p>{{ entrada.contenido|safe }}</p>
+      {% if entrada.imagen %}
+      <img src="{{ entrada.imagen.url }}" alt="Imagen de entrada" style="width:350px ;">
+      {% endif %}
+      <h4>Autor: {{ entrada.autor }}</h4>
+      <p>Creado el: {{ entrada.fecha_ingreso }}</p>
+      <br><br>
+      <a href="{% url 'editarEntrada' entrada.id %}">EDITAR</a>
+    {% endif %}
+    {% if mensaje %}
+    <p>{{ mensaje }}</p>
+    {% endif %}
+  </section>
+
+
+
+{% endblock %}

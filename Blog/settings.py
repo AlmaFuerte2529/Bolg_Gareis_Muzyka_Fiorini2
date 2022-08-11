@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Articulos',
     'Mensajes',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'Blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['D:/Curso Python/Entrega Final/Bolg_Gareis_Muzyka_Fiorini2-secundario/Blog/settings.py', 'D:/Curso Python/Entrega Final/Bolg_Gareis_Muzyka_Fiorini2-secundario/Mensajes/templates/Mensajes'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
