@@ -1,0 +1,8 @@
+Proyecto Blog Gareid, Muzyka y Fiorini.
+
+Plantillas de casos de prueba/error.
+
+
+Queremos aclarar que las plantillas se realizaron en su momento a mano en papel, por lo que la fecha de creación de los exel es la misma.
+
+Muchas gracias.
