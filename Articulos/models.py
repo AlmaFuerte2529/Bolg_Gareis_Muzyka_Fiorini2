@@ -26,7 +26,9 @@ class Comentario(models.Model):
 
 
 class Comentarios(models.Model):
+    entrada_id = models.IntegerField()
     nombre = models.CharField(max_length=50)
     comentario = models.TextField(max_length=400)
+
     def __str__(self):
-        return self.comentario,self.nombre
+        return self.nombre

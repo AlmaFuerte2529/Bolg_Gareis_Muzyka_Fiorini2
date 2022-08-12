@@ -21,7 +21,18 @@
       <h4>Autor: {{ entrada.autor }}</h4>
       <p>Creado el: {{ entrada.fecha_ingreso }}</p>
       <br><br>
+      {% if comentarios %}
+      {% for comentario in comentarios %}
+      <p> {{ comentario.nombre }}</p>
+      <p>{{ comentario.comentario }}</p>
+      {% endfor %}
+      {% endif %}
+      <br><br>
+      {% if request.user == entrada.autor %}
       <a href="{% url 'editarEntrada' entrada.id %}">EDITAR</a>
+      <a href="{% url 'borrar' entrada.id %}">BORRAR</a>
+      {% endif %}
+      <a href="{% url 'comentar' entrada.id %}">COMENTAR</a>
     {% endif %}
     {% if mensaje %}
     <p>{{ mensaje }}</p>

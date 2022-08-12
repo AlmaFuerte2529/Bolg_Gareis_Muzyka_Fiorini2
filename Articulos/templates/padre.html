@@ -38,6 +38,7 @@
         {% if request.user.is_authenticated %}
         <div class="user">
             <img style="width: 60px; height: 60px; border-radius: 50%;" src="{{ request.user.avatar_set.first.imagen.url }}" alt="imagen de perfil"/>
+            <h3>{{ request.user }}</h3>
             <div id="hormenu" style="color: white;">
                 <ul>
                     <li>

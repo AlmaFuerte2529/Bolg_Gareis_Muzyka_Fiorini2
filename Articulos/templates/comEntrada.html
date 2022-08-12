@@ -1,0 +1,22 @@
+{% extends "padre.html" %}
+{% load static %}
+
+{% block Articulo %} 
+    <div>
+                
+        {% if form.error %}
+        <p style= "color:red">ERROR EN EL FORMULARIO</p>
+        {% endif %}
+    
+        <form class="form-table" action="{% url 'comentar' id_entrada %}" method="POST"> {% csrf_token %}
+            
+            <table>
+                {{ form.as_table }}
+            </table>
+    
+    
+            <input type="submit" class ="btn btn-primary" value="Enviar">
+        </form>
+
+    </div>
+{% endblock %}

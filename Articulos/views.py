@@ -1,3 +1,4 @@
+from ast import Delete
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -144,9 +145,10 @@ def inicio(request):
 def detalleEntrada(request, id_entrada):
     try:
         entrada = Entrada.objects.get(id=id_entrada)
+        comentarios = Comentarios.objects.filter(entrada_id=id_entrada)
     except:
         return render(request,"detalleEntrada.html",{"mensaje":'La entrada no existe'})
-    return render(request,"detalleEntrada.html",{"entrada":entrada})
+    return render(request,"detalleEntrada.html",{"entrada":entrada, "comentarios": comentarios})
 
 def entradas(request):
     articulos = Entrada.objects.all().order_by('-fecha_ingreso')
@@ -154,11 +156,12 @@ def entradas(request):
 
 @login_required
 def editarEntrada(request, id_entrada):
-
-    entrada = Entrada.objects.get(id=id_entrada)
-    
+    try:
+        entrada = Entrada.objects.get(id=id_entrada)
+    except:
+        return render(request, "bienvenida.html", {'mensaje':'El articulo no existe'})
     if entrada.autor != request.user:
-        return render(request, "bienvenida.html", {'mensaje':'Uds no es el autor delentrada'})
+        return render(request, "bienvenida.html", {'mensaje':'Uds no es el autor del articulo'})
 
     if request.method == "POST":
         form = EntradaForm(request.POST, request.FILES)
@@ -180,3 +183,30 @@ def editarEntrada(request, id_entrada):
 
 def Nosotros(request):
     return render(request,"nosotros.html")
+
+
+@login_required
+def borrarEntrada(request, id_entrada):
+    try:
+        entrada = Entrada.objects.get(id=id_entrada)
+    except:
+        return render(request,"bienvenida.html",{"mensaje":'La entrada no existe'})
+
+    entrada.delete()
+    return redirect('inicio')
+    
+
+def comentarEntrada(request, id_entrada):
+    
+    if request.method == "POST":
+        form = ComEntradaForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            comentario = form.cleaned_data['comentario']
+            obj = Comentarios(entrada_id = id_entrada, nombre=nombre, comentario=comentario)
+            obj.save()
+            entrada = Entrada.objects.get(id=id_entrada)
+            comentarios = Comentarios.objects.filter(entrada_id=id_entrada)
+            return render(request,"detalleEntrada.html", {"entrada": entrada, "comentarios": comentarios})
+    form = ComEntradaForm()
+    return render(request, "comEntrada.html", { "id_entrada": id_entrada, "form":form})

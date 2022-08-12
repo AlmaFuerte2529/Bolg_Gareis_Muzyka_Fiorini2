@@ -50,4 +50,6 @@ class ComentarioForm(forms.Form):
     comentario = forms.CharField(widget=forms.Textarea)
 
 
-
+class ComEntradaForm(forms.Form):
+    nombre = forms.CharField(label='Autor :', max_length=50)
+    comentario = forms.CharField(widget=forms.Textarea)

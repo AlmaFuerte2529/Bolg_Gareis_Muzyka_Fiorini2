@@ -16,6 +16,7 @@ urlpatterns = [
    path('editar/<id_entrada>', editarEntrada, name='editarEntrada'),
    path('entradas/', entradas, name='entradas'),
    path('nosotros/', Nosotros ,name='nosotros'),
-
+   path('borrar/<id_entrada>', borrarEntrada, name='borrar'),
+   path('comentar/<id_entrada>', comentarEntrada, name='comentar'),
 
 ]
