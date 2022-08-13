@@ -32,7 +32,12 @@
       <a href="{% url 'editarEntrada' entrada.id %}">EDITAR</a>
       <a href="{% url 'borrar' entrada.id %}">BORRAR</a>
       {% endif %}
-      <a href="{% url 'comentar' entrada.id %}">COMENTAR</a>
+      <section style="border: 3px solid #47cfac;border-radius:10px;width:300px;height: 100px;margin-top: 10px;text-align: center;margin-left: 630PX;margin-bottom: 20PX;">
+        <section style="margin-bottom: 35px;">
+            <h1>Sector de Comentarios</h1>
+          <a href="{% url 'comentar' entrada.id %}" class="blogs-button" >COMENTAR</a>
+        </section>
+      </section>
     {% endif %}
     {% if mensaje %}
     <p>{{ mensaje }}</p>
