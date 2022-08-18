@@ -4,6 +4,9 @@ Descripcion de proyecto blog
 * Pablo Fiorini
 * Pablo Muzyka
 
+Se encuentra en Heroku:
+https://blog-gamufi.herokuapp.com/
+
 El blog lo realizamos entre los 3 
 conectadonos a traves de la plataforma zoom ,
 cada dos o tres dias y mediante grupo de whatsapp
